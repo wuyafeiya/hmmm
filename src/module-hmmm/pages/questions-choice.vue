@@ -614,8 +614,8 @@ export default {
       });
     },
     // 编辑修改
-    xiugai(row) {
-      this.$router.push({ path: "/questions/new", query: { id: row.id } });
+    xiugai(id) {
+      this.$router.push({ path: "/questions/new", query: { id } });
     },
     //上下架
     shelves(row) {
