@@ -662,17 +662,17 @@ export default {
       }
       if (this.activeName === "second") {
         const { data: res } = await questionsChoice({ chkState: 1 });
-        this.total = res.counts;
+        this.page.total = res.counts;
         this.ChoiceList = res.items;
       }
       if (this.activeName === "three") {
         const { data: res } = await questionsChoice({ chkState: 2 });
-        this.total = res.counts;
+        this.page.total = res.counts;
         this.ChoiceList = res.items;
       }
       if (this.activeName === "fourth") {
         const { data: res } = await questionsChoice({ chkState: 3 });
-        this.total = res.counts;
+        this.page.total = res.counts;
         this.ChoiceList = res.items;
       }
     },
