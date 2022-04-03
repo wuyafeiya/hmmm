@@ -12,6 +12,10 @@ import './errorLog' // error log
 import * as filters from './filters' // global filters
 import './mock' // simulation data
 // font-awesome
+// 引入dayjs格式化时间
+import dayjs from 'dayjs'
+// 将dayjs挂载到全局
+Vue.prototype.$dayjs = dayjs
 import 'font-awesome/css/font-awesome.css'
 /*
  * 注册 - 业务模块
