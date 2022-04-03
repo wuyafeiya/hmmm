@@ -188,21 +188,14 @@ export default {
     },
     // 新增目录
     async add () {
+      this.results()
+
       this.showDialog = true
     },
     // 修改目录
     put (data) {
-      for (var i = 0; i < this.list.length; i++) {
-        var flag = true
-        for (var j = 0; j < this.result.length; j++) {
-          if (this.list[i].subjectID === this.result[j].subjectID) {
-            flag = false
-          }
-        }
-        if (flag) {
-          this.result.push(this.list[i])
-        }
-      }
+      this.results()
+
       this.showDialog = true
       this.formData = data
     },
@@ -232,6 +225,21 @@ export default {
       }
       this.$refs.addEmployee.resetFields()
       this.showDialog = false
+    },
+    // 筛选后 用来存储下拉选项值
+    results () {
+      for (var i = 0; i < this.list.length; i++) {
+        var flag = true
+        for (var j = 0; j < this.result.length; j++) {
+          if (this.list[i].subjectID === this.result[j].subjectID) {
+            flag = false
+          }
+        }
+        if (flag) {
+          this.result.push(this.list[i])
+        }
+      }
+      // console.log(this.result)
     },
     // 删除目录
     async del (id) {
