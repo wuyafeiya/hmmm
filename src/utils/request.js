@@ -104,3 +104,5 @@ export const createFormAPI = (url, method, data) => {
     ...config
   })
 }
+
+export default instance
