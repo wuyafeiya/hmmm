@@ -6,12 +6,6 @@
  *
  * 题库有关的接口：自己写吧~~  已经被张老师删了 ^_^
  */
-<<<<<<< HEAD
-import createAPI from "@/utils/request";
-
-
-
-=======
 import { createAPI } from '@/utils/request'
 
 // 获取简单学科列表
@@ -34,4 +28,3 @@ export const getQuestion = (id) => createAPI(`/questions/${id}`, 'get')
 
 // 编辑题库
 export const editQuestion = (data) => createAPI(`/questions/${data.id}`, 'put', data)
->>>>>>> feature/questions-new
