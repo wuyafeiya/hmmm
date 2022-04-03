@@ -80,44 +80,44 @@
 </template>
 
 <script>
-import { difficulty, questionType } from "@/api/hmmm/constants";
+import { difficulty, questionType } from '@/api/hmmm/constants'
 export default {
   props: {
     showDialog: {
       type: Boolean,
-      default: false,
+      default: false
     },
     questionDetail: {
       type: Object,
-      require,
-    },
+      required: true
+    }
   },
-  data() {
+  data () {
     return {
-      showVideo: false,
-    };
+      showVideo: false
+    }
   },
   methods: {
-    btnCancel() {
-      this.showVideo = false;
-      this.$emit("update:showDialog", false);
-    },
+    btnCancel () {
+      this.showVideo = false
+      this.$emit('update:showDialog', false)
+    }
   },
   computed: {
-    questionTypes() {
+    questionTypes () {
       const obj = questionType.find(
         (item) => item.value == this.questionDetail.questionType
-      );
-      return obj ? obj.label : "未知";
+      )
+      return obj ? obj.label : '未知'
     },
-    difficultys() {
+    difficultys () {
       const obj = difficulty.find(
         (item) => item.value == this.questionDetail.difficulty
-      );
-      return obj ? obj.label : "未知";
-    },
-  },
-};
+      )
+      return obj ? obj.label : '未知'
+    }
+  }
+}
 </script>
 <style scoped lang='scss'>
 .el-col {

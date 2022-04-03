@@ -12,7 +12,7 @@
               </el-col>
               <el-col :span="4">
                 <div class="grid-content bg-purple">
-                  <el-button size="mini" type="info" @click="queryInfo.keyword = ''">清除</el-button>
+                  <el-button size="mini" type="info" @click="btnClear">清除</el-button>
                   <el-button size="mini" type="primary" @click="getQuestionData">搜索</el-button>
                 </div>
               </el-col>
@@ -120,6 +120,10 @@ export default {
           message: '获取组题列表失败'
         })
       }
+    },
+    btnClear () {
+      this.queryInfo.keyword = ''
+      this.getQuestionData()
     },
     // 每页显示条数
     handleSizeChange (newSize) {

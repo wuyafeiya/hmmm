@@ -147,7 +147,7 @@
           </el-table-column>
           <el-table-column align="center" label="创建日期">
             <template slot-scope="scope">
-              <span>{{scope.row.addDate}}</span>
+              <span>{{scope.row.addDate | parseTimeByString}}</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="备注">
@@ -320,15 +320,14 @@ export default {
         type: 'warning'
       })
         .then(async () => {
-          await remove({ id: user })
-            .then(response => {
-              this.$message.success('成功删除了用户' + '!')
-              this.dataList.splice(user, 1)
-              this.getList(this.requestParameters)
-            })
-            .catch(response => {
-              this.$message.error('删除失败!')
-            })
+          try {
+            await remove(user)
+            this.$message.success('成功删除了用户' + '!')
+            this.dataList.splice(user, 1)
+            this.getList(this.requestParameters)
+          } catch (error) {
+            this.$message.error('删除失败!')
+          }
         })
         .catch(() => {
           this.$message.info('已取消操作!')
@@ -343,7 +342,7 @@ export default {
           title: '提示',
           type: 'warning'
         })
-        disabled({ id: val.id, state: this.state })
+        await disabled({ id: val.id, state: this.state })
         this.$message.success(`${msg}成功`)
         this.getList()
       } catch (error) {

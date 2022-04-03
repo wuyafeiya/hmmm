@@ -427,7 +427,7 @@ export default {
           await addQuestion(this.formData)
         }
         this.$message.success('提交题库成功！')
-        this.$router.push('/questions/list')
+        this.$router.back()
       } catch (error) {
         console.log(error)
       }
