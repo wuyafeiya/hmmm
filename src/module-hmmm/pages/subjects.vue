@@ -66,8 +66,10 @@
           <el-table-column label="题目数量" prop="totals"> </el-table-column>
           <el-table-column fixed="right" label="操作" width="240">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="$router.push(`directorys?id=${scope.row.id}&name=${scope.row.subjectName}`)">学科分类</el-button>
-              <el-button type="text" size="small"  @click="$router.push(`tags?id=${scope.row.id}&name=${scope.row.subjectName}`)">学科标签</el-button>
+              <!-- <el-button type="text" size="small" @click="$router.push(`directorys?id=${scope.row.id}&name=${scope.row.subjectName}`)">学科分类</el-button>
+              <el-button type="text" size="small"  @click="$router.push(`tags?id=${scope.row.id}&name=${scope.row.subjectName}`)">学科标签</el-button> -->
+              <el-button type="text" size="small" @click="$router.push(`/subjects/directorys/${scope.row.id}`)">学科分类</el-button>
+              <el-button type="text" size="small" @click="$router.push(`/subjects/tags/${scope.row.id}`)">学科标签</el-button>
               <el-button
                 type="text"
                 size="small"
@@ -147,13 +149,13 @@
 </template>
 
 <script>
-import Subject from "../../api/hmmm/subjects";
-import subjectsEdit from "../components/subjects-edit.vue";
+import Subject from '../../api/hmmm/subjects'
+import subjectsEdit from '../components/subjects-edit.vue'
 export default {
   components: {
     subjectsEdit
   },
-  data() {
+  data () {
     return {
       // 学科的数据列表
       subjectsList: [],
@@ -162,13 +164,13 @@ export default {
       // 添加的验证规则
       addRules: {
         subjectName: [
-          { required: true, message: "请输入学科名称", trigger: "blur" },
-          { min: 3, max: 8, message: "长度在 3 到 8 个字符", trigger: "blur" }
+          { required: true, message: '请输入学科名称', trigger: 'blur' },
+          { min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur' }
         ]
       },
       // 添加的输入框数据
       addSubjectsFrom: {
-        subjectName: "",
+        subjectName: '',
         isFrontDisplay: true
       },
       // 添加的弹框显示与隐藏
@@ -177,120 +179,120 @@ export default {
       TableList: {
         page: 1,
         pagesize: 10,
-        subjectName: ""
+        subjectName: ''
       },
       // 修改的id
-      userId: "",
+      userId: '',
       // 修改的默认表单值
       editSubjectsFrom: {
-        subjectName: "",
-        isFrontDisplay: ""
+        subjectName: '',
+        isFrontDisplay: ''
       },
       // 修改学科的弹框显示
       editDialogVisible: false
-    };
+    }
   },
 
-  created() {
-    this.getSubjectsList();
+  created () {
+    this.getSubjectsList()
   },
   methods: {
-    changeFn() {
-      this.editDialogVisible = false;
-      this.getSubjectsList();
+    changeFn () {
+      this.editDialogVisible = false
+      this.getSubjectsList()
     },
     // 删除学科
-    async deleteSub(row) {
+    async deleteSub (row) {
       const configRuselt = await this.$confirm(
-        "此操作将永久删除该学科, 是否继续?",
-        "提示",
+        '此操作将永久删除该学科, 是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      ).catch(err => err);
-      if (configRuselt !== "confirm") {
-        return this.$message("您取消了删除操作!");
+      ).catch(err => err)
+      if (configRuselt !== 'confirm') {
+        return this.$message('您取消了删除操作!')
       }
       try {
-        const { data } = await Subject.remove(row);
-        console.log(data);
-        this.$message.success("删除成功!");
-        this.getSubjectsList();
+        const { data } = await Subject.remove(row)
+        console.log(data)
+        this.$message.success('删除成功!')
+        this.getSubjectsList()
       } catch (error) {
-        this.$message.error("删除失败!");
+        this.$message.error('删除失败!')
       }
     },
     // 添加学科
-    async addSubFrom() {
+    async addSubFrom () {
       try {
         await Subject.add({
           subjectName: this.addSubjectsFrom.subjectName,
           isFrontDisplay: this.addSubjectsFrom.isFrontDisplay
-        });
-        this.$message.success("新增学科成功");
-        this.addDialog = false;
-        this.getSubjectsList();
+        })
+        this.$message.success('新增学科成功')
+        this.addDialog = false
+        this.getSubjectsList()
       } catch (error) {
-        this.$message.error("新增学科失败");
+        this.$message.error('新增学科失败')
       }
     },
 
     // 重置输入框
-    resetSub() {
-      this.$refs.addSubjectsFrom.resetFields();
+    resetSub () {
+      this.$refs.addSubjectsFrom.resetFields()
     },
     // 点击新增学科显示弹出框
-    addSubjects() {
-      this.addDialog = true;
+    addSubjects () {
+      this.addDialog = true
     },
 
     // 点击清除按钮清空input输入框
-    clearSub() {
-      this.TableList.subjectName = "";
-      this.getSubjectsList();
+    clearSub () {
+      this.TableList.subjectName = ''
+      this.getSubjectsList()
     },
     // 获取学科的列表数据
-    async getSubjectsList() {
+    async getSubjectsList () {
       try {
-        const { data } = await Subject.list(this.TableList);
+        const { data } = await Subject.list(this.TableList)
         data.items.forEach(item => {
           item.addDate = this.$dayjs(item.addDate).format(
-            "YYYY-MM-DD hh:mm:ss"
-          );
-        });
-        this.subjectsList = data.items;
-        this.total = data.counts;
-        console.log(data);
+            'YYYY-MM-DD hh:mm:ss'
+          )
+        })
+        this.subjectsList = data.items
+        this.total = data.counts
+        console.log(data)
       } catch (error) {
-        this.$message.error("请求数据失败");
-        console.log(error);
+        this.$message.error('请求数据失败')
+        console.log(error)
       }
     },
     // 点击修改显示弹框
-    editSubList(item) {
-      this.editSubjectsFrom.subjectName = item.subjectName;
+    editSubList (item) {
+      this.editSubjectsFrom.subjectName = item.subjectName
       if (item.isFrontDisplay === 1) {
-        this.editSubjectsFrom.isFrontDisplay = true;
+        this.editSubjectsFrom.isFrontDisplay = true
       } else {
-        this.editSubjectsFrom.isFrontDisplay = false;
+        this.editSubjectsFrom.isFrontDisplay = false
       }
-      this.userId = item.id;
-      this.editDialogVisible = true;
+      this.userId = item.id
+      this.editDialogVisible = true
     },
     // 条
-    handleSizeChange(newSize) {
-      this.TableList.pagesize = newSize;
-      this.getSubjectsList();
+    handleSizeChange (newSize) {
+      this.TableList.pagesize = newSize
+      this.getSubjectsList()
     },
     // 页
-    handleCurrentChange(newPage) {
-      this.TableList.page = newPage;
-      this.getSubjectsList();
+    handleCurrentChange (newPage) {
+      this.TableList.page = newPage
+      this.getSubjectsList()
     }
   }
-};
+}
 </script>
 
 <style>
