@@ -23,6 +23,8 @@ import base from '@/module-manage/' // 用户管理
 import hmmm from '@/module-hmmm/'
 // 将dayjs挂载到全局
 Vue.prototype.$dayjs = dayjs // 黑马面面
+// import hmmm from '@/module-hmmm/' // 黑马面面
+import moment from 'moment'
 
 Vue.use(dashboard, store)
 Vue.use(base, store)
@@ -44,6 +46,13 @@ Vue.use(Element, {
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+
+Vue.filter('convertTime', function (timeStr, formatStr) {
+  return moment(timeStr).format(formatStr);
+});
+
+
 
 Vue.config.productionTip = false
 

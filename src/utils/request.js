@@ -106,3 +106,4 @@ export const createFormAPI = (url, method, data) => {
 }
 
 export default instance
+
