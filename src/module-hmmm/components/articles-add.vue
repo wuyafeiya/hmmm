@@ -117,11 +117,7 @@ export default {
       type: Boolean,
       required: true,
     },
-    // editDate: {
-    //   //表单值
-    //   type: Object,
-    //   required: true,
-    // },
+ 
   },
 
   watch: {},

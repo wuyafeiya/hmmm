@@ -91,6 +91,7 @@
               prop="createTime"
               align="center"
               label="录入时间"
+              :formatter="formattercreateTime"
               width="300px"
             >
             </el-table-column>
@@ -107,13 +108,15 @@
                   type="primary"
                   :underline="false"
                   style="margin-right: 5px"
+                  @click="articlePreviewFn(scope.row)"
                   >预览</el-link
                 >
                 <el-link
                   type="primary"
                   :underline="false"
                   style="margin-right: 5px"
-                  >禁用</el-link
+                  @click="changeState(scope.row)"
+                  >{{ scope.row.state == 0 ? "屏蔽" : "开启" }}</el-link
                 >
                 <el-link
                   type="primary"
@@ -154,13 +157,18 @@
     </div>
 
     <articlesAdd ref="articlesAdd" :dialogVisible.sync="articlesAddShow" />
+    <articlesPreview
+      :dialogVisible.sync="articlesPreviewShow"
+      :articleContent="articleContent"
+    />
   </div>
 </template>
 
 <script>
-import { list, remove } from "@/api/hmmm/articles";
+import { list, remove, changeState } from "@/api/hmmm/articles";
 import articlesAdd from "../components/articles-add.vue";
-// import articleEdit from "../components/articles-edit.vue";
+import articlesPreview from "../components/articles-preview.vue";
+import moment from "moment";
 
 export default {
   data() {
@@ -173,31 +181,47 @@ export default {
 
       tableData: [], //文章列表数据
       articlesAddShow: false, //文章新增显示
-      // articleEditShow: false, //文章编辑显示
-      // editDate: "", //编辑数据
+      articlesPreviewShow: false, //文章编辑显示
+      articleContent: "", //文章内容
     };
   },
 
   methods: {
+    async changeState(data) {
+      //修改文章状态
+      try {
+        if (data.state == 0) {
+          data.state = 1;
+        } else {
+          data.state = 0;
+        }
+        await changeState(data.id, data.state);
+        this.$message.success("修改文章状态成功");
+        this.getArticleList();
+      } catch (err) {
+        this.$message.error("修改失败请稍后重试");
+      }
+    },
+
+    articlePreviewFn(data) {
+      //文章预览
+      this.articlesPreviewShow = true;
+      this.articleContent = data;
+    },
+
     updateFn(data) {
       //更改数据
-      // console.log(data);
       this.articlesAddShow = true;
-      // this.editDate = data;
-      // console.log(this.editDate);
-      // console.log(this.$refs.articlesAdd);
       this.$refs.articlesAdd.article = data;
     },
 
     async deleteFn(id) {
       //删除数据
       try {
-        // console.log(id);
         await remove(id);
         this.$message.success("删除成功");
         this.getArticleList();
       } catch (err) {
-        // console.log(err);
         this.$message.error("删除失败请稍后重试");
       }
     },
@@ -218,15 +242,19 @@ export default {
       return cellValue === 0 ? "开启 " : "屏蔽";
     },
 
+    formattercreateTime(row, column, cellValue, index) {
+      //格式化时间
+      return cellValue
+        ? moment(cellValue).format("YYYY-MM-DD HH:mm:ss")
+        : cellValue;
+    },
     async sizeChangeFn(val) {
       //每页数量变化
-      // console.log(val);
       this.pagesize = val;
       await this.getArticleList();
     },
     async currentChangeFn(val) {
       //当前页变化
-      // console.log(val);
       this.currentPage4 = val;
       await this.getArticleList();
     },
@@ -242,7 +270,7 @@ export default {
         });
         this.total = data.counts;
         this.tableData = data.items;
-        // console.log(data);
+        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -273,6 +301,7 @@ export default {
 
   components: {
     articlesAdd,
+    articlesPreview,
   },
 };
 </script>
@@ -300,7 +329,6 @@ export default {
   background-color: #e9eef3;
   color: #333;
   text-align: center;
-  // line-height: 160px;
 }
 
 body > .el-container {
@@ -338,7 +366,6 @@ body > .el-container {
 
 .qualitynum {
   display: block;
-  // vertical-align: middle;
   margin-left: 20px;
 }
 
