@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth'
 // create an axios instance
 const instance = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
-  timeout: 5000 // request timeout
+  timeout: 50000 // request timeout
 })
 
 // request interceptor
@@ -104,3 +104,6 @@ export const createFormAPI = (url, method, data) => {
     ...config
   })
 }
+
+export default instance
+
